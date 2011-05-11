@@ -8,6 +8,7 @@ $:.unshift(File.dirname(__FILE__)) unless
   
 require 'twimage/base'
 require 'twimage/twitpic'
+require 'twimage/yfrog'
 require 'twimage/version'
 
 module Twimage

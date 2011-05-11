@@ -1,10 +1,10 @@
 module Twimage
-  class Twitpic < Twimage::Base
+  class Yfrog < Twimage::Base
     
     def initialize(service_url)
       @service_url = service_url
       begin
-        image_tag = Nokogiri::HTML(open(@service_url+'/full')).css('body > img').first
+        image_tag = Nokogiri::HTML(open(@service_url.gsub('.com', '.com/z'))).css('#the-image img').first
       rescue OpenURI::HTTPError
         raise ServiceURLInvalid, "The service URL #{@service_url} was not found (returned a 404)"
       end

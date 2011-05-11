@@ -8,7 +8,7 @@ module Twimage
       puts response.code
       if response.code == 200
         @image = Tempfile.new(['twimage','.jpg'])
-        @image << response.body
+        @image << response.body.force_encoding('utf-8')
       else
         raise ImageURLInvalid, "The image_url #{@image_url} was not found (returned a 404)"
       end

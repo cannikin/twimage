@@ -2,8 +2,13 @@ require 'nokogiri'
 require 'open-uri'
 require 'httparty'
 require 'tempfile'
-require_relative './twimage/base'
-Dir.glob('./twimage/*').each { |f| require_relative f }
+
+$:.unshift(File.dirname(__FILE__)) unless
+  $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
+  
+require 'twimage/base'
+require 'twimage/twitpic'
+require 'twimage/version'
 
 module Twimage
   

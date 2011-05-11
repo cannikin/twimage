@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
   s.name        = "twimage"
   s.version     = Twimage::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
+  s.authors     = ["Rob Cameron"]
+  s.email       = ["cannikinn@gmail.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{A gem for pulling images from various Twitter image services}
+  s.description = %q{This gem will programatically grab images from a bunch of the most used Twitter image services}
 
   s.rubyforge_project = "twimage"
 
@@ -18,4 +18,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+  
+  s.add_dependency 'nokogiri'
+  s.add_dependency 'httparty'
 end

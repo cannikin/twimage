@@ -19,6 +19,15 @@ Twimage will create a Ruby tempfile with the image. To get the tempfile:
 Save the image to your local system, upload to S3, etc. As soon as there are no more references to the
 tempfile in your code it will be unlinked (deleted). Enjoy!
 
+## Support
+
+Twimage currently supports the following services:
+
+* twitpic - http://twitpic.com
+* yfrog - http://yfrog.com
+
 ## Contributing
 
-To add a parser, fork this repo and then send me a pull request, that's it!
+To add a parser, fork this repo and then send me a pull request. Your parser should make a reasonable attempt to
+retrieve the highest resolution image possible and return errors if the service URL returns a 404 or the proper 
+image tag couldn't be found (see twitpic.rb for an example).

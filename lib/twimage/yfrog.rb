@@ -3,8 +3,9 @@ module Twimage
     
     def initialize(service_url)
       @service_url = service_url
+      full_res_service_url = @service_url.gsub(/\.com/, '.com/z')
       begin
-        image_tag = Nokogiri::HTML(open(@service_url.gsub('.com', '.com/z'))).css('#the-image img').first
+        image_tag = Nokogiri::HTML(open(full_res_service_url)).css('#the-image img').first
       rescue OpenURI::HTTPError
         raise ServiceURLInvalid, "The service URL #{@service_url} was not found (returned a 404)"
       end

@@ -14,7 +14,7 @@ Instantiate the appropriate service and give it the standard URL returned by tha
     
 Twimage will create a Ruby tempfile with the image. To get the tempfile:
 
-    result.image
+    result.tempfile
     
 Save the image to your local system, upload to S3, etc. As soon as there are no more references to the
 tempfile in your code it will be unlinked (deleted). Enjoy!

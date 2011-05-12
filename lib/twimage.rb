@@ -3,13 +3,12 @@ require 'open-uri'
 require 'httparty'
 require 'tempfile'
 
-$:.unshift(File.dirname(__FILE__)) unless
-  $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
+$:.unshift(File.dirname(__FILE__)) unless $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
   
+require 'twimage/version'
 require 'twimage/base'
 require 'twimage/twitpic'
 require 'twimage/yfrog'
-require 'twimage/version'
 
 module Twimage
   
@@ -19,4 +18,4 @@ module Twimage
 
 end
 
-# puts Twimage::Twitpic.new('http://twitpic.com/4w30yx').image.inspect
+#puts Twimage::Yfrog.new('http://yfrog.com/hsjdhxqj').inspect

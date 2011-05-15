@@ -8,7 +8,11 @@ Add twimage to your Gemfile:
 
     gem 'twimage'
     
-Instantiate the appropriate service and give it the standard URL returned by that service:
+Of without bundler:
+
+    gem install twimage
+    
+Now simply take the standard URL that is posted to Twitter and tell Twimage to go get it:
 
     result = Twimage.get('http://instagr.am/p/EHqLG/')
     
@@ -18,7 +22,7 @@ Twimage will create a Ruby tempfile with the image. To get the tempfile:
     
 Save the image to your local system, upload to S3, etc. As soon as there are no more references to the
 tempfile in your code it will be unlinked (deleted). There are a couple additional instance variables
-you have access to--try result.inspect to take a look.
+you have access to...try `result.inspect` to take a look.
 
 Enjoy!
 

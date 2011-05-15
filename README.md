@@ -24,6 +24,10 @@ Save the image to your local system, upload to S3, etc. As soon as there are no 
 tempfile in your code it will be unlinked (deleted). There are a couple additional instance variables
 you have access to...try `result.inspect` to take a look.
 
+Twimage will follow any redirects that eventually get you to any of the included services. So, if you
+have a Instagram image behind a Bitly shortened URL, just give the Bitly link to Twimage and he'll
+(she'll?) take care of the rest.
+
 Enjoy!
 
 ## Support

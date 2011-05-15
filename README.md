@@ -10,14 +10,17 @@ Add twimage to your Gemfile:
     
 Instantiate the appropriate service and give it the standard URL returned by that service:
 
-    result = Twimage::Twitpic.new('http://twitpic.com/4w30yx')
+    result = Twimage.get('http://instagr.am/p/EHqLG/')
     
 Twimage will create a Ruby tempfile with the image. To get the tempfile:
 
     result.tempfile
     
 Save the image to your local system, upload to S3, etc. As soon as there are no more references to the
-tempfile in your code it will be unlinked (deleted). Enjoy!
+tempfile in your code it will be unlinked (deleted). There are a couple additional instance variables
+you have access to--try result.inspect to take a look.
+
+Enjoy!
 
 ## Support
 
@@ -25,9 +28,11 @@ Twimage currently supports the following services:
 
 * twitpic - http://twitpic.com
 * yfrog - http://yfrog.com
+* instagram - http://instagr.am
 
 ## Contributing
 
-To add a parser, fork this repo and then send me a pull request. Your parser should make a reasonable attempt to
-retrieve the highest resolution image possible and return errors if the service URL returns a 404 or the proper 
-image tag couldn't be found (see twitpic.rb for an example).
+To add a parser, fork this repo and then send me a pull request. You should attempt to get the highest resolution
+version of the image possible, which isn't always available at the link posted to Twitter. Check out the `SERVICES`
+constant in `twimage.rb` for examples of `lambda`s used to modify the original `service_url` to get to the full res
+version's URL.

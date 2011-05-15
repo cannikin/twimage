@@ -20,7 +20,10 @@ module Twimage
               { :name => :yfrog,
                 :service_match => /yfrog\.com/,
                 :full_url_modifier => lambda { |url| url.gsub(/\.com/, '.com/z') },
-                :image_css_match => '#the-image img' }]
+                :image_css_match => '#the-image img' },
+              { :name => :instagram,
+                :service_match => [/instagr\.am/, /instagram\.com/],
+                :image_css_match => '.photo'}]
                   
   def self.get(url)
     service_url = HTTParty.get(url).request.path.to_s                                                                 # first point HTTParty at this URL and follow any redirects to get to the final page
@@ -36,7 +39,9 @@ module Twimage
   # figure out which service this is by matching against regexes
   def self.find_service(url)
     return SERVICES.find do |service|
-      url.match(service[:service_match])
+      [service[:service_match]].flatten.find do |regex|
+        url.match(regex)
+      end
     end
   end
   

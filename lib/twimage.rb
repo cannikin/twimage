@@ -13,6 +13,7 @@ module Twimage
   class ImageNotFound < StandardError; end      # thrown if the service_url doesn't contain an expected image tag
   class ImageURLInvalid < StandardError; end    # thrown if the image_url found in the service_url returns a 404
   
+  USER_AGENT = "Twimage #{Twimage::VERSION} http://github.com/cannikin/twimage"
   SERVICES = [{ :name => :twitpic,
                 :service_match => /twitpic\.com/,
                 :full_url_modifier => lambda { |url| url + '/full' },
@@ -26,7 +27,7 @@ module Twimage
                 :image_css_match => '.photo'}]
                   
   def self.get(url)
-    service_url = HTTParty.get(url).request.path.to_s                                                                 # first point HTTParty at this URL and follow any redirects to get to the final page
+    service_url = HTTParty.get(url, :headers => { 'User-Agent' => USER_AGENT }).request.path.to_s                                                                 # first point HTTParty at this URL and follow any redirects to get to the final page
     service = find_service(service_url)                                                                               # check the resulting service_url for which service we're hitting
     full_res_service_url = service[:full_url_modifier] ? service[:full_url_modifier].call(service_url) : service_url  # get the full res version of the service_url
     image_url = get_image_url(service, full_res_service_url)                                                          # get the URL to the image
@@ -50,7 +51,7 @@ module Twimage
   def self.get_image_url(service, url)
     # get the content of the image page
     begin
-      image_tag = Nokogiri::HTML(open(url)).css(service[:image_css_match]).first
+      image_tag = Nokogiri::HTML(open(url, 'User-Agent' => USER_AGENT)).css(service[:image_css_match]).first
     rescue OpenURI::HTTPError
       raise ServiceURLInvalid, "The service URL #{url} was not found (returned a 404)"
     end
@@ -67,7 +68,7 @@ module Twimage
   # download the actual image and put into a tempfile
   def self.get_image(url)
     # get the image itself
-    response = HTTParty.get(url)
+    response = HTTParty.get(url, :headers => { 'User-Agent' => USER_AGENT })
     if response.code == 200
       return response.body.force_encoding('utf-8')
     else

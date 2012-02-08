@@ -68,7 +68,7 @@ module Twimage
       
     elsif service[:image_regex_match]
       begin
-        image_url = HTTParty.get(url, {}, :headers => 'User-Agent' => USER_AGENT).body.match(service[:image_regex_match])[1]
+        image_url = HTTParty.get(url, :headers => {'User-Agent' => USER_AGENT}).body.match(service[:image_regex_match])[1]
       rescue OpenURI::HTTPError
         raise ServiceURLInvalid, "The service URL #{url} was not found (returned a 404)"
       end

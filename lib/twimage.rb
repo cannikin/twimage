@@ -17,14 +17,18 @@ module Twimage
   SERVICES = [{ :name => :twitpic,
                 :service_match => /twitpic\.com/,
                 :full_url_modifier => lambda { |url| url + '/full' },
-                :image_css_match => 'body > img' },
+                :image_css_match => '#media-full img' },
               { :name => :yfrog,
                 :service_match => /yfrog\.com/,
                 :full_url_modifier => lambda { |url| url.gsub(/\.com/, '.com/z') },
                 :image_css_match => '#the-image img' },
               { :name => :instagram,
                 :service_match => [/instagr\.am/, /instagram\.com/],
-                :image_css_match => '.photo'}]
+                :image_css_match => '.photo' },
+              { :name => :twitter,
+                #:full_url_modifier => lambda { |url| url + '/large' },
+                :service_match => /twitter\.com/,
+                :image_regex_match => /"media_url_https":"(.*?)"/}]
                   
   def self.get(url)
     service_url = HTTParty.get(url, :headers => { 'User-Agent' => USER_AGENT }).request.path.to_s                                                                 # first point HTTParty at this URL and follow any redirects to get to the final page
@@ -41,6 +45,8 @@ module Twimage
   def self.find_service(url)
     return SERVICES.find do |service|
       [service[:service_match]].flatten.find do |regex|
+        puts url
+        puts regex
         url.match(regex)
       end
     end
@@ -49,16 +55,27 @@ module Twimage
   
   # tear apart the HTML on the returned service page and find the source of the image
   def self.get_image_url(service, url)
+    image_url = nil
     # get the content of the image page
-    begin
-      image_tag = Nokogiri::HTML(open(url, 'User-Agent' => USER_AGENT)).css(service[:image_css_match]).first
-    rescue OpenURI::HTTPError
-      raise ServiceURLInvalid, "The service URL #{url} was not found (returned a 404)"
+    if service[:image_css_match]
+      begin
+        image_tag = Nokogiri::HTML(open(url, 'User-Agent' => USER_AGENT)).css(service[:image_css_match]).first
+        image_url = image_tag['src']
+      rescue OpenURI::HTTPError
+        raise ServiceURLInvalid, "The service URL #{url} was not found (returned a 404)"
+      end
+      # get the URL to the actual image file
+      
+    elsif service[:image_regex_match]
+      begin
+        image_url = HTTParty.get(url, {}, :headers => 'User-Agent' => USER_AGENT).body.match(service[:image_regex_match])[1]
+      rescue OpenURI::HTTPError
+        raise ServiceURLInvalid, "The service URL #{url} was not found (returned a 404)"
+      end
     end
     
-    # get the URL to the actual image file
-    if image_tag
-      return image_tag['src']
+    if image_url
+      return image_url
     else
       raise ImageNotFound, "The service URL #{url} did not contain an identifiable image"
     end
@@ -77,3 +94,5 @@ module Twimage
   end
   
 end
+
+puts Twimage.get 'http://pic.twitter.com/GQk2RNI'

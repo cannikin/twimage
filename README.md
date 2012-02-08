@@ -32,11 +32,12 @@ Enjoy!
 
 ## Support
 
-Twimage currently supports the following services:
+Twimage currently supports the following photo services:
 
 * twitpic - http://twitpic.com
 * yfrog - http://yfrog.com
 * instagram - http://instagr.am
+* twitter - http://twitter.com
 
 ## Contributing
 
